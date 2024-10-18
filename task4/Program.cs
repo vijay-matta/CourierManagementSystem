@@ -163,7 +163,7 @@ public class Program
         Console.ReadKey();
         Console.WriteLine("---------------------------------------------------");
 
-        //Q 12)
+        //Q 14)
         Console.WriteLine("Enter password length:");
         int length = Convert.ToInt32(Console.ReadLine());
 
@@ -174,7 +174,39 @@ public class Program
         Console.ReadKey();
         Console.WriteLine("---------------------------------------------------");
 
+            //Q 15)
+
+    List<string> addresses = new List<string>();
+    Console.Write("How many addresses? ");
+    int count = int.Parse(Console.ReadLine());
+
+    for (int i = 0; i < count; i++)
+    {
+        Console.Write($"Enter address {i + 1}: ");
+        addresses.Add(Console.ReadLine());
     }
+
+    var similarAddresses = FindSimilarAddresses(addresses);
+    if (similarAddresses.Count == 0)
+        Console.WriteLine("No similar addresses found.");
+    else
+        foreach (var pair in similarAddresses)
+            Console.WriteLine($"Similar: \n1. {pair.Item1}\n2. {pair.Item2}\n");
+}
+
+         static List<Tuple<string, string>> FindSimilarAddresses(List<string> addresses)
+         {
+             var similarPairs = new List<Tuple<string, string>>();
+              for (int i = 0; i < addresses.Count; i++)
+              for (int j = i + 1; j < addresses.Count; j++)
+              if (addresses[i].Trim().ToLower() == addresses[j].Trim().ToLower())
+                similarPairs.Add(new Tuple<string, string>(addresses[i], addresses[j]));
+               return similarPairs;
+
+              Console.ReadKey();
+              Console.WriteLine("---------------------------------------------------");
+           }
+}
 
 
     //10. Customer Data Validation: Write a function which takes 2 parameters, data-denotes the data and 
@@ -379,4 +411,49 @@ public class Program
 
         return new string(password);
     }
+
+ //15. Find Similar Addresses: Implement a function that finds similar addresses in the system. This can be 
+//useful for identifying duplicate customer entries or optimizing delivery routes.Use string functions to 
+//implement this. 
+    public static void FindSimilarAddress()
+{
+    List<string> addresses = new List<string>
+    {
+        "Kalika Nagar, Kopargaon",
+        "Kalika Nagar, Kopargaon",
+        "Pimpri Chinchwad, Pune",
+        "Pimpri Chinchwad, Pune, Maharashtra"
+
+    };
+
+    var similarAddresses = FindSimilarAddresses(addresses);
+    foreach (var pair in similarAddresses)
+    {
+        Console.WriteLine($"Similar Addresses: \n1. {pair.Item1} \n2. {pair.Item2}\n");
+    }
+
+    List<Tuple<string, string>> FindSimilarAddresses(List<string> addresses)
+    {
+        var similarPairs = new List<Tuple<string, string>>();
+
+        for (int i = 0; i < addresses.Count; i++)
+        {
+            for (int j = i + 1; j < addresses.Count; j++)
+            {
+                // Normalize both addresses: trim spaces and convert to lowercase
+                string normalizedAddress1 = addresses[i].Trim().ToLower();
+                string normalizedAddress2 = addresses[j].Trim().ToLower();
+
+                // Compare normalized addresses
+                if (string.Equals(normalizedAddress1, normalizedAddress2))
+                {
+                    similarPairs.Add(new Tuple<string, string>(addresses[i], addresses[j]));
+                }
+            }
+        }
+
+        return similarPairs;
+
+    }
+}
 }
